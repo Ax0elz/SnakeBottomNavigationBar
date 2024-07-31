@@ -143,7 +143,7 @@ class SnakeViewState extends State<SnakeView> {
   }
 
   void _goRight() {
-    if (context.mounted) {
+    if (mounted) {
       final newSnakeSize =
           widget.notifier.currentIndex + 1 - widget.notifier.lastIndex;
       setState(() => snakeSize = newSnakeSize);
@@ -158,7 +158,7 @@ class SnakeViewState extends State<SnakeView> {
   }
 
   void _goLeft() {
-    if (context.mounted) {
+    if (mounted) {
       final newSnakeSize =
           (widget.notifier.currentIndex - widget.notifier.lastIndex).abs();
       setState(() {
