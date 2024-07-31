@@ -146,22 +146,25 @@ class SnakeViewState extends State<SnakeView> {
     }
   }
 
-  void _goRight() {
+  void _goRight() async {
     if (mounted) {
       final newSnakeSize =
           widget.notifier.currentIndex + 1 - widget.notifier.lastIndex;
       setState(() => snakeSize = newSnakeSize);
-      Future.delayed(
+      await Future.delayed(
         widget.animationDuration + widget.delayTransition,
-        () => setState(() {
-          snakeSize = 1;
-          left = oneItemWidth! * widget.notifier.currentIndex;
-        }),
+        () {
+          if (!mounted) return;
+          setState(() {
+            snakeSize = 1;
+            left = oneItemWidth! * widget.notifier.currentIndex;
+          });
+        },
       );
     }
   }
 
-  void _goLeft() {
+  void _goLeft() async {
     if (mounted) {
       final newSnakeSize =
           (widget.notifier.currentIndex - widget.notifier.lastIndex).abs();
@@ -169,9 +172,12 @@ class SnakeViewState extends State<SnakeView> {
         left = oneItemWidth! * widget.notifier.currentIndex;
         snakeSize = newSnakeSize + 1;
       });
-      Future.delayed(
+      await Future.delayed(
         widget.animationDuration + widget.delayTransition,
-        () => setState(() => snakeSize = 1),
+        () {
+          if (!mounted) return;
+          setState(() => snakeSize = 1);
+        },
       );
     }
   }
