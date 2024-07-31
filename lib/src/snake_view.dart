@@ -54,6 +54,12 @@ class SnakeViewState extends State<SnakeView> {
   }
 
   @override
+  void dispose() {
+    widget.notifier.removeListener(() {});
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = SnakeBottomBarTheme.of(context)!;
     oneItemWidth =
@@ -137,31 +143,33 @@ class SnakeViewState extends State<SnakeView> {
   }
 
   void _goRight() {
-    if (!context.mounted) return;
-    final newSnakeSize =
-        widget.notifier.currentIndex + 1 - widget.notifier.lastIndex;
-    setState(() => snakeSize = newSnakeSize);
-    Future.delayed(
-      widget.animationDuration + widget.delayTransition,
-      () => setState(() {
-        snakeSize = 1;
-        left = oneItemWidth! * widget.notifier.currentIndex;
-      }),
-    );
+    if (context.mounted) {
+      final newSnakeSize =
+          widget.notifier.currentIndex + 1 - widget.notifier.lastIndex;
+      setState(() => snakeSize = newSnakeSize);
+      Future.delayed(
+        widget.animationDuration + widget.delayTransition,
+        () => setState(() {
+          snakeSize = 1;
+          left = oneItemWidth! * widget.notifier.currentIndex;
+        }),
+      );
+    }
   }
 
   void _goLeft() {
-    if (!context.mounted) return;
-    final newSnakeSize =
-        (widget.notifier.currentIndex - widget.notifier.lastIndex).abs();
-    setState(() {
-      left = oneItemWidth! * widget.notifier.currentIndex;
-      snakeSize = newSnakeSize + 1;
-    });
-    Future.delayed(
-      widget.animationDuration + widget.delayTransition,
-      () => setState(() => snakeSize = 1),
-    );
+    if (context.mounted) {
+      final newSnakeSize =
+          (widget.notifier.currentIndex - widget.notifier.lastIndex).abs();
+      setState(() {
+        left = oneItemWidth! * widget.notifier.currentIndex;
+        snakeSize = newSnakeSize + 1;
+      });
+      Future.delayed(
+        widget.animationDuration + widget.delayTransition,
+        () => setState(() => snakeSize = 1),
+      );
+    }
   }
 
   ShapeBorder _getRoundShape(double radius) => RoundedRectangleBorder(
