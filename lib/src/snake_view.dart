@@ -17,7 +17,7 @@ class SnakeView extends StatefulWidget {
   final double height;
 
   const SnakeView({
-    Key? key,
+    super.key,
     required this.itemsCount,
     required this.widgetEdgePadding,
     required this.notifier,
@@ -26,13 +26,13 @@ class SnakeView extends StatefulWidget {
     this.snakeCurve = Curves.easeInOut,
     this.indicatorHeight = 4,
     required this.height,
-  }) : super(key: key);
+  });
 
   @override
-  _SnakeViewState createState() => _SnakeViewState();
+  SnakeViewState createState() => SnakeViewState();
 }
 
-class _SnakeViewState extends State<SnakeView> {
+class SnakeViewState extends State<SnakeView> {
   double left = 0;
   int snakeSize = 1;
   int? currentIndex;
@@ -137,6 +137,7 @@ class _SnakeViewState extends State<SnakeView> {
   }
 
   void _goRight() {
+    if (!context.mounted) return;
     final newSnakeSize =
         widget.notifier.currentIndex + 1 - widget.notifier.lastIndex;
     setState(() => snakeSize = newSnakeSize);
@@ -150,6 +151,7 @@ class _SnakeViewState extends State<SnakeView> {
   }
 
   void _goLeft() {
+    if (!context.mounted) return;
     final newSnakeSize =
         (widget.notifier.currentIndex - widget.notifier.lastIndex).abs();
     setState(() {
