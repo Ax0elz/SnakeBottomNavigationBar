@@ -54,6 +54,12 @@ class SnakeViewState extends State<SnakeView> {
   }
 
   @override
+  void initState() {
+    addListener();
+    super.initState();
+  }
+
+  @override
   void dispose() {
     widget.notifier.removeListener(() {});
     super.dispose();
@@ -65,8 +71,6 @@ class SnakeViewState extends State<SnakeView> {
     oneItemWidth =
         (MediaQuery.of(context).size.width - widget.widgetEdgePadding) /
             widget.itemsCount;
-
-    addListener();
 
     if (currentIndex == null ||
         currentIndex != widget.notifier.currentIndex ||
